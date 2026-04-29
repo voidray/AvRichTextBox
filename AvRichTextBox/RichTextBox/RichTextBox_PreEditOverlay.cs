@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input.TextInput;
 using Avalonia.Layout;
@@ -25,11 +26,11 @@ public partial class RichTextBox
 
    private void RichTextBox_TextInputMethodClientRequested(object? sender, TextInputMethodClientRequestedEventArgs e)
    {
-     
+
       if (e.GetType() == typeof(TextInputMethodClientRequestedEventArgs))
       {
          client ??= new RichTextBoxTextInputClient(this);
-        
+
          e.Client = client;
 
          //Debug.WriteLine("e.Client requested = " + e.Client.Selection.ToString());
@@ -41,11 +42,11 @@ public partial class RichTextBox
    string _preeditText = "";
 
    internal void InsertPreeditText(string preeditText)
-   {      
+   {
       _preeditText = preeditText;
       //Debug.WriteLine("preditexttext = *" + _preeditText + "*");
       UpdatePreeditOverlay();
-      
+
    }
 
    internal Point CaretPosition { get; set; }
@@ -86,7 +87,24 @@ public partial class RichTextBox
       IsHitTestVisible = false
    };
 
-     
+   private void UpdateCaretBrush()
+   {
+      if (CaretBrush != null)
+      {
+         _CaretRect.Stroke = CaretBrush;
+      }
+      else if (this.TryFindResource("TextControlForeground", this.ActualThemeVariant, out var resource)
+               && resource is IBrush brush)
+      {
+         _CaretRect.Stroke = brush;
+      }
+      else
+      {
+         _CaretRect.Stroke = Brushes.Black;
+      }
+   }
+
+
 
    internal readonly Avalonia.Controls.Shapes.Path SelectionPath = new()
    {
@@ -95,11 +113,11 @@ public partial class RichTextBox
       Opacity = 0.35,
       IsHitTestVisible = false
    };
-   
+
    private readonly PathGeometry _geometry = new() { Figures = [] };
-   
+
    internal static PathFigure GetLineRectanglePath(Rect lineRect)
-   {          
+   {
       double tlineTop = lineRect.Top;
       double tlineRight = lineRect.Right;
       double tlineBottom = lineRect.Bottom;
@@ -125,6 +143,6 @@ public partial class RichTextBox
 
    }
 
-   
+
 }
 

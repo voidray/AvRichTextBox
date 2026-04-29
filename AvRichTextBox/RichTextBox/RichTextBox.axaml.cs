@@ -40,6 +40,7 @@ public partial class RichTextBox : UserControl
       this.TextInput += RichTextBox_TextInput;
       this.GotFocus += RichTextBox_GotFocus;
       this.LostFocus += RichTextBox_LostFocus;
+      this.ActualThemeVariantChanged += RichTextBox_ActualThemeVariantChanged;
 
       RtbVm.FlowDocChanged += RtbVM_FlowDocChanged;
 
@@ -170,6 +171,16 @@ public partial class RichTextBox : UserControl
          }
 
       }
+
+      else if (e.Property == CaretBrushProperty)
+      {
+         UpdateCaretBrush();
+      }
+   }
+
+   private void RichTextBox_ActualThemeVariantChanged(object? sender, EventArgs e)
+   {
+      UpdateCaretBrush();
    }
 
    private void RichTextBox_GotFocus(object? sender, FocusChangedEventArgs e)
@@ -263,7 +274,7 @@ public partial class RichTextBox : UserControl
          FlowDoc.MovePageSelection(direction, extend, newCharIndexInDoc + (int)(FlowDocSV.Bounds.Height / 2));
 
       }
-
+      
    }
 
    private void FlowDocSV_SizeChanged(object? sender, SizeChangedEventArgs e)
@@ -297,10 +308,10 @@ public partial class RichTextBox : UserControl
       };
 
 
-      
+
    }
 
-  
+
 
 }
 
