@@ -157,17 +157,27 @@ public partial class RichTextBox : UserControl
           RtbVm.FlowDoc.ScrollInDirection += RtbVm.FlowDoc_ScrollInDirection;
           RtbVm.FlowDoc.UpdateRTBCaret += RtbVm.FlowDoc_UpdateRTBCaret;
 
-          RtbVm.FlowDoc.SelectionBrush = this.SelectionBrush;
+           RtbVm.FlowDoc.SelectionBrush = this.SelectionBrush;
+           RtbVm.FlowDoc.HyperlinkBrush = this.HyperlinkBrush;
           
           RtbVm.FlowDoc.InitializeDocument();
           CreateClient();
 
        }
     
-       else if (e.Property == CaretBrushProperty)
+        else if (e.Property == CaretBrushProperty)
        {
           UpdateCaretBrush();
        }
+
+        else if (e.Property == HyperlinkBrushProperty)
+        {
+           if (FlowDoc != null)
+           {
+              FlowDoc.HyperlinkBrush = this.HyperlinkBrush;
+              FlowDoc.UpdateAllHyperlinkBrushes();
+           }
+        }
 
        else if (e.Property == IsCaretVisibleProperty)
        {

@@ -35,6 +35,7 @@ public partial class FlowDocument
 			ClearDocument();
 			GetFlowDocumentFromRtf(rtfdom!, this);
 			InitializeDocument();
+			UpdateAllHyperlinkBrushes();
 		}
 		catch (Exception ex2) { Debug.WriteLine($"error getting flow doc:\n{ex2.Message}"); }
 	}
@@ -93,6 +94,7 @@ public partial class FlowDocument
       ClearDocument();
       ProcessXamlString(xamlContent, this);
 		InitializeDocument();
+		UpdateAllHyperlinkBrushes();
 	}
 
 	internal void SaveHtmlDocToFile(string fileName)
@@ -133,6 +135,7 @@ public partial class FlowDocument
 			hdoc.LoadHtml(htmlContent);
 			HtmlConversions.GetFlowDocumentFromHtml(hdoc, this);
 			InitializeDocument();
+			UpdateAllHyperlinkBrushes();
 		}
 		catch (Exception ex2) { Debug.WriteLine("error getting flow doc:\n" + ex2.Message); }
 	}
@@ -153,6 +156,7 @@ public partial class FlowDocument
 				ClearDocument();
 				GetFlowDocument(WordDoc.MainDocumentPart!, this);
 				InitializeDocument();
+				UpdateAllHyperlinkBrushes();
 			}
 			catch (Exception ex2) { Debug.WriteLine("error getting flow doc:\n" + ex2.Message); }
 		}
@@ -175,6 +179,7 @@ public partial class FlowDocument
 		if (await XamlConversions.LoadXamlPackage(fileName, this))
 		{
 			InitializeDocument();
+			UpdateAllHyperlinkBrushes();
 		}
 		else
 			NewDocument();

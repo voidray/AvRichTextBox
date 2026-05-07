@@ -136,6 +136,7 @@ public partial class FlowDocument
       {
          MyParagraphId = startPar.Id,
          MyFlowDoc = this,
+         HyperlinkBrush = this.HyperlinkBrush,
       };
 
       startPar.Inlines.Insert(insertIdx, newHyperlink);

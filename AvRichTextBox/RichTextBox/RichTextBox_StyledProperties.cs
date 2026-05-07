@@ -82,11 +82,18 @@ public static readonly StyledProperty<IBrush?> CaretBrushProperty = AvaloniaProp
        set => SetValue(CaretBrushProperty, value);
     }
 
-    public static readonly StyledProperty<bool> IsCaretVisibleProperty = AvaloniaProperty.Register<RichTextBox, bool>(nameof(IsCaretVisible), defaultValue: true, defaultBindingMode: BindingMode.OneWay);
+public static readonly StyledProperty<bool> IsCaretVisibleProperty = AvaloniaProperty.Register<RichTextBox, bool>(nameof(IsCaretVisible), defaultValue: true, defaultBindingMode: BindingMode.OneWay);
     public bool IsCaretVisible
     {
        get => GetValue(IsCaretVisibleProperty);
        set => SetValue(IsCaretVisibleProperty, value);
+    }
+
+    public static readonly StyledProperty<IBrush> HyperlinkBrushProperty = AvaloniaProperty.Register<RichTextBox, IBrush>(nameof(HyperlinkBrush), defaultValue: Brushes.Blue, defaultBindingMode: BindingMode.OneWay);
+    public IBrush HyperlinkBrush
+    {
+       get => GetValue(HyperlinkBrushProperty);
+       set => SetValue(HyperlinkBrushProperty, value);
     }
 
 

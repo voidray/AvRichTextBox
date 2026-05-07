@@ -60,13 +60,14 @@ public partial class FlowDocument : AvaloniaObject
 
     public TextRange Selection { get; set; }
     internal IBrush SelectionBrush = Brushes.LightSteelBlue;  // default
-
-    public FlowDocument()
-    {
-        Blocks = [];
-        Selection = new TextRange(this, 0, 0);
-        Selection.Start_Changed += SelectionStart_Changed;
-        Selection.End_Changed += SelectionEnd_Changed;
+    internal IBrush HyperlinkBrush = Brushes.Blue;
+   
+   public FlowDocument()
+   {
+      Blocks = [];
+      Selection = new TextRange(this, 0, 0);
+      Selection.Start_Changed += SelectionStart_Changed;
+      Selection.End_Changed += SelectionEnd_Changed;
 
         DefineFormatRunActions();
 
@@ -252,6 +253,17 @@ public partial class FlowDocument : AvaloniaObject
             trange.UpdateContextStart();
             trange.UpdateContextEnd();
         }
+    }
+
+    internal void UpdateAllHyperlinkBrushes()
+    {
+        foreach (Paragraph p in AllParagraphs)
+            foreach (IEditable inline in p.Inlines)
+                if (inline is EditableHyperlink hl)
+                {
+                    hl.HyperlinkBrush = this.HyperlinkBrush;
+                    hl.ForceFormatting();
+                }
     }
 
     internal string GetText(TextRange tRange) => string.Join("", GetTextRangeInlines(tRange, addToDoc: false).createdInlines.ConvertAll(il => il.InlineText));

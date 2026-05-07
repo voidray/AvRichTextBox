@@ -4,14 +4,31 @@ namespace AvRichTextBox;
 
 public class EditableHyperlink : EditableRun
 {
-   private static readonly ISolidColorBrush displayBrush = Brushes.Blue;
-   private static readonly TextDecorationCollection displayDecoration = 
-      [ new() { 
-         Location = TextDecorationLocation.Underline, 
-         Stroke = displayBrush, 
-         StrokeThicknessUnit = TextDecorationUnit.Pixel, 
-         StrokeThickness = 1 
-      }];
+   internal IBrush HyperlinkBrush
+   {
+       get => _hyperlinkBrush;
+       set
+       {
+           _hyperlinkBrush = value;
+           _decoration = null;
+       }
+   }
+   private IBrush _hyperlinkBrush = Brushes.Blue;
+   private TextDecorationCollection? _decoration;
+
+   private TextDecorationCollection GetDecoration()
+   {
+       if (_decoration == null)
+       {
+           _decoration = [new() {
+               Location = TextDecorationLocation.Underline,
+               Stroke = _hyperlinkBrush,
+               StrokeThicknessUnit = TextDecorationUnit.Pixel,
+               StrokeThickness = 1
+           }];
+       }
+       return _decoration;
+   }
 
    public EditableHyperlink(string displayText, string navigateUri) 
    {  
@@ -23,10 +40,10 @@ public class EditableHyperlink : EditableRun
       
    }
 
-   private void ForceFormatting()
+   internal void ForceFormatting()
    {
-      this.Foreground = displayBrush;
-      this.TextDecorations = displayDecoration;
+      this.Foreground = _hyperlinkBrush;
+      this.TextDecorations = GetDecoration();
    }
 
    internal EditableHyperlink() { ForceFormatting(); }
@@ -36,13 +53,13 @@ public class EditableHyperlink : EditableRun
       base.OnPropertyChanged(change);
 
       //Prevent user change to hyperlink formatting
-      if (change.Property == ForegroundProperty && !Equals(change.NewValue, displayBrush))
+      if (change.Property == ForegroundProperty && !Equals(change.NewValue, _hyperlinkBrush))
       {
-         SetCurrentValue(ForegroundProperty, displayBrush);
+         SetCurrentValue(ForegroundProperty, _hyperlinkBrush);
       }
-      else if (change.Property == TextDecorationsProperty && !Equals(change.NewValue, displayDecoration))
+      else if (change.Property == TextDecorationsProperty && !ReferenceEquals(change.NewValue, GetDecoration()))
       {
-         SetCurrentValue(TextDecorationsProperty, displayDecoration);
+         SetCurrentValue(TextDecorationsProperty, GetDecoration());
       }
    }
 
@@ -64,6 +81,7 @@ public class EditableHyperlink : EditableRun
         IsLastInlineOfParagraph = this.IsLastInlineOfParagraph,
         BaselineAlignment = this.BaselineAlignment,
         Foreground = this.Foreground,
+        HyperlinkBrush = this.HyperlinkBrush,
      };
 
 
