@@ -11,7 +11,8 @@ public class EditableHyperlink : EditableRun
        {
            _hyperlinkBrush = value;
            _decoration = null;
-       }
+            ForceFormatting();
+        }
    }
    private IBrush _hyperlinkBrush = Brushes.Blue;
    private TextDecorationCollection? _decoration;

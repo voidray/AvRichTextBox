@@ -258,12 +258,16 @@ public partial class FlowDocument : AvaloniaObject
     internal void UpdateAllHyperlinkBrushes()
     {
         foreach (Paragraph p in AllParagraphs)
+        {
             foreach (IEditable inline in p.Inlines)
+            {
                 if (inline is EditableHyperlink hl)
                 {
                     hl.HyperlinkBrush = this.HyperlinkBrush;
                     hl.ForceFormatting();
                 }
+            }
+        }
     }
 
     internal string GetText(TextRange tRange) => string.Join("", GetTextRangeInlines(tRange, addToDoc: false).createdInlines.ConvertAll(il => il.InlineText));
